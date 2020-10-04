@@ -19,7 +19,7 @@ public class Block {
 
     public Block(Map<Transaction, PublicKey> transactionsToValidate) {
         this.timeStamp = new Timestamp(System.currentTimeMillis());
-        this.transactions = getAllValidTransactions(transactionsToValidate);
+        this.transactions = validateTransactions(transactionsToValidate);
         getMerkleRootValue(transactions.stream()
                                        .map(t -> Util.getHash(t.getDataToHash()))
                                        .collect(Collectors.toList()));
@@ -27,11 +27,18 @@ public class Block {
                 transactionsToValidate.size(), transactions.size());
     }
 
-    private List<Transaction> getAllValidTransactions(final Map<Transaction, PublicKey>  transactionsToValidate) {
-        return transactionsToValidate.keySet()
-                .stream()
-                .filter(t -> t.isValid(transactionsToValidate.get(t)))
-                .collect(Collectors.toList());
+    private List<Transaction> validateTransactions(final Map<Transaction, PublicKey>  transactionsToValidate) {
+        List<Transaction> validTransactions = new ArrayList<>();
+        for (Map.Entry<Transaction, PublicKey> entry: transactionsToValidate.entrySet()) {
+            Transaction tempTransaction = entry.getKey();
+            if (tempTransaction.isValid(entry.getValue())) {
+                tempTransaction.transferMoney();
+                validTransactions.add(entry.getKey());
+            } else {
+                tempTransaction.refundMoney();
+            }
+        }
+        return validTransactions;
     }
 
     private void getMerkleRootValue(List<String> hashes) {

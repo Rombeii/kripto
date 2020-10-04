@@ -1,17 +1,16 @@
 import java.security.*;
 
 public class Transaction {
-    private final String from;
-    private final String to;
+    private final Wallet from;
+    private final Wallet to;
     private final Long amount;
     private final byte[] signature;
 
-    public Transaction(String from, Wallet to, Long amount, PrivateKey privateKey) {
+    public Transaction(Wallet from, Wallet to, Long amount, PrivateKey privateKey) {
         this.from = from;
-        this.to = to.getOwner();
+        this.to = to;
         this.amount = amount;
         this.signature = signTransaction(privateKey);
-        to.addMoney(amount);
     }
 
 
@@ -28,7 +27,7 @@ public class Transaction {
     }
 
     public String getDataToHash() {
-        return from + to + amount.toString();
+        return from.getOwner() + to.getOwner() + amount.toString();
     }
 
     public boolean isValid(PublicKey publicKey) {
@@ -41,6 +40,14 @@ public class Transaction {
             System.out.println(e.toString());
         }
         return false;
+    }
+
+    public void transferMoney() {
+        to.addMoney(amount);
+    }
+
+    public void refundMoney() {
+        from.addMoney(amount);
     }
 
 }

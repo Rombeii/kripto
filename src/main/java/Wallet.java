@@ -31,7 +31,7 @@ public class Wallet {
             amountOfMoney -= amount;
             System.out.printf("A new Transaction was created: %s sent %s %d coins.%n",
                     owner, to.getOwner(), amount);
-            return new Transaction(owner, to, amount, keyPair.getPrivate());
+            return new Transaction(this, to, amount, keyPair.getPrivate());
         }
     }
 
