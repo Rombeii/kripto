@@ -5,9 +5,7 @@ import java.security.*;
 public class Wallet {
     @Getter
     private final String owner;
-
     private Long amountOfMoney;
-
     private KeyPair keyPair;
 
     public Wallet(String owner, Long amountOfMoney) {
@@ -31,8 +29,8 @@ public class Wallet {
             throw new IllegalArgumentException("You can't spend more than you have!");
         } else {
             amountOfMoney -= amount;
-            System.out.println(String.format("A new Transaction was created: %s sent %s %d coins.",
-                    owner, to.getOwner(), amount));
+            System.out.printf("A new Transaction was created: %s sent %s %d coins.%n",
+                    owner, to.getOwner(), amount);
             return new Transaction(owner, to, amount, keyPair.getPrivate());
         }
     }

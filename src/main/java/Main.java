@@ -4,7 +4,6 @@ import java.util.Map;
 
 public class Main {
 
-
     public static void main(String[] args) {
 
         Wallet alice = new Wallet("Alice", 500L);
@@ -37,7 +36,5 @@ public class Main {
         block2.mine();
 
         blockChain.addBlock(block2);
-        blockChain.isValid();
-
     }
 }

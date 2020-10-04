@@ -1,8 +1,5 @@
-import lombok.Getter;
-
 import java.security.*;
 
-@Getter
 public class Transaction {
     private final String from;
     private final String to;
@@ -22,7 +19,7 @@ public class Transaction {
         try {
             Signature sign = Signature.getInstance("SHA256withDSA");
             sign.initSign(privateKey);
-            sign.update(Util.getHash(getDataToHash()).getBytes());
+            sign.update(getDataToHash().getBytes());
             return sign.sign();
         } catch (Exception e) {
             System.out.println(e.toString());
@@ -38,7 +35,7 @@ public class Transaction {
         try {
             Signature signatureToVerify = Signature.getInstance("SHA256withDSA");
             signatureToVerify.initVerify(publicKey);
-            signatureToVerify.update(Util.getHash(getDataToHash()).getBytes());
+            signatureToVerify.update(getDataToHash().getBytes());
             return signatureToVerify.verify(signature);
         } catch (Exception e) {
             System.out.println(e.toString());

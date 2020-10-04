@@ -10,16 +10,11 @@ import java.util.stream.Collectors;
 
 @Getter
 public class Block {
-
-    private String rootValue;
-
     @Setter
     private String previousHash;
-
+    private String rootValue;
     private final List<Transaction> transactions;
-
     private final Timestamp timeStamp;
-
     private String nonce;
 
     public Block(Map<Transaction, PublicKey> transactionsToValidate) {
@@ -28,8 +23,8 @@ public class Block {
         getMerkleRootValue(transactions.stream()
                                        .map(t -> Util.getHash(t.getDataToHash()))
                                        .collect(Collectors.toList()));
-        System.out.println(String.format("Block creation started with %d transactions, %d transactions were found valid.",
-                transactionsToValidate.size(), transactions.size()));
+        System.out.printf("Block creation started with %d transactions, %d transactions were found valid.%n",
+                transactionsToValidate.size(), transactions.size());
     }
 
     private List<Transaction> getAllValidTransactions(final Map<Transaction, PublicKey>  transactionsToValidate) {
