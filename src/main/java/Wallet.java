@@ -30,6 +30,9 @@ public class Wallet {
         if (amountOfMoney < amount) {
             throw new IllegalArgumentException("You can't spend more than you have!");
         } else {
+            amountOfMoney -= amount;
+            System.out.println(String.format("A new Transaction was created: %s sent %s %d coins.",
+                    owner, to.getOwner(), amount));
             return new Transaction(owner, to, amount, keyPair.getPrivate());
         }
     }
