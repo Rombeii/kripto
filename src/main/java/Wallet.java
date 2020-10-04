@@ -2,16 +2,16 @@ import lombok.Getter;
 
 import java.security.*;
 
-public class Person {
+public class Wallet {
     @Getter
-    private final String name;
+    private final String owner;
 
-    private final Long amountOfMoney;
+    private Long amountOfMoney;
 
     private KeyPair keyPair;
 
-    public Person(String name, Long amountOfMoney) {
-        this.name = name;
+    public Wallet(String owner, Long amountOfMoney) {
+        this.owner = owner;
         this.amountOfMoney = amountOfMoney;
         generateKeyPair();
     }
@@ -26,11 +26,11 @@ public class Person {
         }
     }
 
-    public Transaction createTransactionToPersonWithAmount(Person to, Long amount) {
+    public Transaction createTransactionToPersonWithAmount(Wallet to, Long amount) {
         if (amountOfMoney < amount) {
             throw new IllegalArgumentException("You can't spend more than you have!");
         } else {
-            return new Transaction(name, to.getName(), amount, keyPair.getPrivate());
+            return new Transaction(owner, to, amount, keyPair.getPrivate());
         }
     }
 
@@ -38,4 +38,7 @@ public class Person {
         return keyPair.getPublic();
     }
 
+    public void addMoney(Long amountToAdd) {
+        amountOfMoney += amountToAdd;
+    }
 }
